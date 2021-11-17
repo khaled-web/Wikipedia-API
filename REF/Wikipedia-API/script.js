@@ -9,7 +9,7 @@ searchBtn.addEventListener('click', searchWiki);
 // search wiki
 function searchWiki(event) {
  event.preventDefault();
- showGif('show');
+ showGif('show')
  let searchValue = input.value;
 
  const origin = "https://en.wikipedia.org";
@@ -19,43 +19,38 @@ function searchWiki(event) {
   return data.json()
 
  }).then(displayData).catch(function (error) {
-  console.log('There was an error')
- })
-}
+  console.log(error);
 
+ })
+
+}
 // show/hide gif
+
 function showGif(value) {
  if (value === 'show') {
   document.querySelector('.wait-icon').classList.add('show')
- } else if (value === 'hide') {
+ }
+ else if (value === 'hide') {
   document.querySelector('.wait-icon').classList.remove('show')
 
  }
 }
-
 // display Data
+
 function displayData(data) {
- console.log(data);
- let results = data.query.search;
- console.log(results);
+ // console.log(data);
+ showGif('hide')
+ let result = data.query.search;
+ console.log(result);
+
+
  let output = '';
- results.forEach(e => {
-  output += `
-   <li class="search-item">
-    <h2 class="search-item__title">
-     ${e.title}
-    </h2>
-    <p class="search-item__text">
-     ${e.snippet}
-    </p>
-    <a target = "_blank"
-    class = "search-item__link"
-    href = "http://en.wikipedia.org/?curid=${e.pageid}" >
-     read more...
-    </a>
+ result.forEach(function (item) {
+  output += `<li class="search-item">
+    <h2 class="search-item__title">${item.title}</h2>
+    <p class="search-item__text">${item.snippet}</p>
+    <a href="http://en.wikipedia.org/?curid=${item.pageid}" class="search-item__link" target="_blank">read more ...</a>
    </li>`
- });
+ })
  document.querySelector('.results').innerHTML = output;
- showGif('hide');
- input.value = '';
 }
